@@ -113,6 +113,8 @@ module ghrd(
   wire [15:0] addr1;
   reg  ramwe1;
   
+
+  
  soc_system u0 (
 		//Clock&Reset
 	  .clk_clk                               (FPGA_CLK1_50 ),                        //  clk.clk
@@ -242,4 +244,34 @@ altera_edge_detector pulse_debug_reset (
   defparam pulse_debug_reset.EDGE_TYPE = 1;
   defparam pulse_debug_reset.IGNORE_RST_WHILE_BUSY = 1;
 
+
+  reg [3:0] cnt2=0;
+  
+assign addr1 = cnt2;
+
+
+  reg [8:0] cnt;
+  reg q;
+  
+  
+  always @(posedge FPGA_CLK1_50) cnt<= ramq1;
+
+  always @(posedge FPGA_CLK1_50)
+  begin
+   
+    
+  ramwe1 <= 1'b0;
+ end 
+
+ always @(posedge KEY[0])
+ begin
+   cnt2 = cnt2+1;
+ end
+ 
+  
+ 
+  assign LED = cnt;   
+
+    
+  
 endmodule
