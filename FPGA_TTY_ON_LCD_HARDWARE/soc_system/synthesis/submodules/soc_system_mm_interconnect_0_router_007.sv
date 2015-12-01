@@ -1,4 +1,4 @@
-// (C) 2001-2014 Altera Corporation. All rights reserved.
+// (C) 2001-2015 Altera Corporation. All rights reserved.
 // Your use of Altera Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
 // files any of the foregoing (including device programming or simulation 
@@ -24,9 +24,9 @@
 // agreement for further details.
 
 
-// $Id: //acds/rel/14.1/ip/merlin/altera_merlin_router/altera_merlin_router.sv.terp#1 $
+// $Id: //acds/rel/15.0/ip/merlin/altera_merlin_router/altera_merlin_router.sv.terp#1 $
 // $Revision: #1 $
-// $Date: 2014/10/06 $
+// $Date: 2015/02/08 $
 // $Author: swbranch $
 
 // -------------------------------------------------------
@@ -49,14 +49,14 @@ module soc_system_mm_interconnect_0_router_007_default_decode
                DEFAULT_RD_CHANNEL = -1,
                DEFAULT_DESTID = 0 
    )
-  (output [102 - 101 : 0] default_destination_id,
+  (output [102 - 100 : 0] default_destination_id,
    output [5-1 : 0] default_wr_channel,
    output [5-1 : 0] default_rd_channel,
    output [5-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
-    DEFAULT_DESTID[102 - 101 : 0];
+    DEFAULT_DESTID[102 - 100 : 0];
 
   generate
     if (DEFAULT_CHANNEL == -1) begin : no_default_channel_assignment
@@ -115,7 +115,7 @@ module soc_system_mm_interconnect_0_router_007
     localparam PKT_ADDR_H = 67;
     localparam PKT_ADDR_L = 36;
     localparam PKT_DEST_ID_H = 102;
-    localparam PKT_DEST_ID_L = 101;
+    localparam PKT_DEST_ID_L = 100;
     localparam PKT_PROTECTION_H = 117;
     localparam PKT_PROTECTION_L = 115;
     localparam ST_DATA_W = 127;

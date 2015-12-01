@@ -76,6 +76,12 @@
 			ram1_write                            : in    std_logic                     := 'X';             -- write
 			ram1_readdata                         : out   std_logic_vector(7 downto 0);                     -- readdata
 			ram1_writedata                        : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- writedata
+			ram2_address                          : in    std_logic_vector(15 downto 0) := (others => 'X'); -- address
+			ram2_chipselect                       : in    std_logic                     := 'X';             -- chipselect
+			ram2_clken                            : in    std_logic                     := 'X';             -- clken
+			ram2_write                            : in    std_logic                     := 'X';             -- write
+			ram2_readdata                         : out   std_logic_vector(7 downto 0);                     -- readdata
+			ram2_writedata                        : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- writedata
 			reset_reset_n                         : in    std_logic                     := 'X'              -- reset_n
 		);
 	end component soc_system;

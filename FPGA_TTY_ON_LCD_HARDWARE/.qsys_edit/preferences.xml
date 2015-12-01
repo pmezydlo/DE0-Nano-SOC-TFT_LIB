@@ -8,7 +8,7 @@
   </columns>
  </systemtable>
  <library
-   expandedCategories="Project,Library,Library/Basic Functions/On Chip Memory,Library/Basic Functions" />
+   expandedCategories="Library/Basic Functions/On Chip Memory,Library/Basic Functions,Library,Project" />
  <window width="1366" height="728" x="0" y="0" />
- <hdlexample language="VERILOG" />
+ <hdlexample language="VHDL" />
 </preferences>

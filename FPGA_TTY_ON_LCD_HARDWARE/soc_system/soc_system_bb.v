@@ -70,13 +70,19 @@ module soc_system (
 	memory_mem_odt,
 	memory_mem_dm,
 	memory_oct_rzqin,
-	reset_reset_n,
 	ram1_address,
 	ram1_chipselect,
 	ram1_clken,
 	ram1_write,
 	ram1_readdata,
-	ram1_writedata);	
+	ram1_writedata,
+	reset_reset_n,
+	ram2_address,
+	ram2_chipselect,
+	ram2_clken,
+	ram2_write,
+	ram2_readdata,
+	ram2_writedata);	
 
 	input		clk_clk;
 	input		hps_0_f2h_cold_reset_req_reset_n;
@@ -148,11 +154,17 @@ module soc_system (
 	output		memory_mem_odt;
 	output	[3:0]	memory_mem_dm;
 	input		memory_oct_rzqin;
-	input		reset_reset_n;
 	input	[15:0]	ram1_address;
 	input		ram1_chipselect;
 	input		ram1_clken;
 	input		ram1_write;
 	output	[7:0]	ram1_readdata;
 	input	[7:0]	ram1_writedata;
+	input		reset_reset_n;
+	input	[15:0]	ram2_address;
+	input		ram2_chipselect;
+	input		ram2_clken;
+	input		ram2_write;
+	output	[7:0]	ram2_readdata;
+	input	[7:0]	ram2_writedata;
 endmodule

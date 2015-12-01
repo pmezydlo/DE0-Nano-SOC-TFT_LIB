@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEMA4U23) Path("C:/Users/Patryk/Desktop/DE0-Nano-SOC-TTY_ON_LCD/FPGA_TTY_ON_LCD_HARDWARE/") File("soc_system.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEMA4U23) Path("C:/Users/Patryk/Desktop/DE0-Nano-SOC-TTY_ON_LCD1/FPGA_TTY_ON_LCD_HARDWARE/") File("soc_system.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

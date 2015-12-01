@@ -108,11 +108,21 @@ module ghrd(
 // connection of internal logics
   assign stm_hw_events    = {{13{1'b0}},SW, fpga_led_internal, fpga_debounced_buttons};
 
-	reg [7:0] ramdata1;
+	wire[7:0] ramdata1;
   wire [7:0] ramq1;
   wire [15:0] addr1;
   reg  ramwe1;
   
+  	wire[7:0] ramdata2;
+  wire [7:0] ramq2;
+  wire [15:0] addr2;
+  reg  ramwe2;
+    		
+		 reg clk10_out;
+		 wire [7:0] red_out;
+		 wire [7:0] green_out;
+		 wire [7:0] blue_out;
+		 wire de;
 
   
  soc_system u0 (
@@ -204,7 +214,16 @@ module ghrd(
         .ram1_clken                             (1'b1),                             //                          .clken
         .ram1_write                             (ramwe1),                             //                          .write
         .ram1_readdata                          (ramq1),                          //                          .readdata
-        .ram1_writedata                         (ramdata1)                          //                          .writedata			
+        .ram1_writedata                         (ramdata1),                          //                          .writedata			
+        
+		  .ram2_address                           (addr2),                           //                       ram.address
+        .ram2_chipselect                        (1'b1),                        //                          .chipselect
+        .ram2_clken                             (1'b1),                             //                          .clken
+        .ram2_write                             (ramwe2),                             //                          .write
+        .ram2_readdata                          (ramq2),                          //                          .readdata
+        .ram2_writedata                         (ramdata2)                          //                          .writedata			
+ 
+ 
  );
 
 
@@ -245,33 +264,103 @@ altera_edge_detector pulse_debug_reset (
   defparam pulse_debug_reset.IGNORE_RST_WHILE_BUSY = 1;
 
 
-  reg [3:0] cnt2=0;
-  
-assign addr1 = cnt2;
+//counter in divider 50Mhz/6-> 8,333Mhz
+reg [6:0] c = 0;
+
+reg [16:0] pixaddr;
+
+//parameter
+	parameter TDEH = 480;  
+   parameter TDEL = 256;
+   parameter TDEB = 45;  
+   parameter TDE = 272;  
+
+// Horizontal and vertical counter
+reg [9:0] Hcount;
+reg [8:0] Vcount;
 
 
-  reg [8:0] cnt;
-  reg q;
-  
-  
-  always @(posedge FPGA_CLK1_50) cnt<= ramq1;
+always @(posedge FPGA_CLK1_50)
+begin
+		 if (pixaddr[16]==1'b0)
+		 ramwe1 = 1'b0;
+		
+			 if (pixaddr[16]==1'b1)
+		 ramwe2 = 1'b0;	
+	  
+	if (c < 3) 
+			begin
+				c = c+1;
+				clk10_out = 1'b1;	 
+			end 
+		else if (c>=3 && c<=4)
+			begin
+				c = c+1;
+				clk10_out = 1'b0;
+			end	
+		else
+			begin
+				c = 0;
+			end
+	 
 
-  always @(posedge FPGA_CLK1_50)
-  begin
-   
-    
-  ramwe1 <= 1'b0;
- end 
+end
 
- always @(posedge KEY[0])
- begin
-   cnt2 = cnt2+1;
- end
- 
-  
- 
-  assign LED = cnt;   
+always @(posedge clk10_out)
+begin
 
-    
+	if (Hcount < TDEH && Vcount < TDE)
+		begin
+		//addr1 = (Vcount * 480) + Hcount;
+		pixaddr = (Vcount * 480) + Hcount;
+		//addr2 = (Vcount * 480) + Hcount;
+		 
+
+		// ramwe2 = 1'b1;
+		end
+	
+
+
+	if  (Hcount < (TDEH+TDEL))
+		begin
+		    
+			Hcount = Hcount + 1;
+		end
+	else
+		begin
+		  if (Vcount < (TDE+TDEB))
+				begin
+					Vcount = Vcount + 1;
+				end
+			else
+				begin
+					Vcount = 0;
+				end
+				
+			 Hcount = 0;
+		end
+end
+
+assign  de = ((Hcount < TDEH) && (Vcount < TDE)) ? 1'b1 : 1'b0; 
+
+  assign addr1[15:0] = (pixaddr[16]==1'b0) ? pixaddr [15:0] : 0;
+  assign addr2[15:0] = (pixaddr[16]==1'b1) ? pixaddr [15:0] : 0;
+				
+
+assign red_out = (pixaddr[16]==1'b0) ?  ramq1[7:5]<<5 : ramq2[7:5]<<5;
+assign green_out = (pixaddr[16]==1'b0) ?  ramq1[4:3]<<6 : ramq2[4:3]<<6;
+assign blue_out = (pixaddr[16]==1'b0) ? ramq1[2:0]<<5 : ramq2[2:0]<<5;
+
+  		  assign  GPIO_0[34] = clk10_out;
+		  assign GPIO_0[35] = de;
+		  
+	  
+		  
+		 assign  GPIO_0[9:3] = red_out [7:1];
+		 assign GPIO_0[1] = red_out[0];
+		 assign GPIO_0[17:10] = green_out [7:0];
+		assign GPIO_0[33:26] = blue_out[7:0];
+	
+
   
 endmodule
