@@ -305,7 +305,13 @@ uint8_t RGB565TORGB323(uint16_t COLOR)
       uint8_t R  = (((COLOR) & 0xF800) >> 8);
 
 
-   return ((R) | (G>>3) | (B>>5));
+
+    uint8_t k = 0;
+    k =  (((R)&0xE0) | ((G>>3)&0x18) | ((B>>5)&0x7));
+
+
+
+   return k;
 }
 
 uint16_t RGB565(uint8_t R, uint8_t G, uint8_t B)
