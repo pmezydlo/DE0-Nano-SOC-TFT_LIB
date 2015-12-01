@@ -321,8 +321,12 @@ uint16_t RGB565(uint8_t R, uint8_t G, uint8_t B)
 
 uint8_t RGB323(uint8_t R, uint8_t G, uint8_t B)
 {
-    return ((R) | (G>>3) | (B>>5));
+       uint8_t k = 0;
+    k =  (((R)&0xE0) | ((G>>3)&0x18) | ((B>>5)&0x7));
+
+return  k;
 }
+
 void sendbitmap(void *h2p_lw_addr)
 {int i=0;
  for(i=0;i<130560;i++)
