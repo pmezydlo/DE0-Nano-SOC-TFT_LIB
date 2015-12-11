@@ -58,6 +58,10 @@
  * The macros are prefixed with 'PIO_LED_'.
  * The prefix is the slave descriptor.
  */
+#define ADC_BASE 0x0x10000
+#define ADC_END 0x1f
+#define ADC_DATA_WIDTH 8
+
 #define PIO_LED_COMPONENT_TYPE altera_avalon_pio
 #define PIO_LED_COMPONENT_NAME pio_led
 #define PIO_LED_BASE 0x0

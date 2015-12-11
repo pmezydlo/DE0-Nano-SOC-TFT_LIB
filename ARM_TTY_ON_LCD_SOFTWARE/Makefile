@@ -10,7 +10,7 @@ ARCH= arm
 
 
 build: $(TARGET)
-$(TARGET): main.o 
+$(TARGET): main.o TFT.o
 	$(CC) $(LDFLAGS)   $^ -o $@  
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
